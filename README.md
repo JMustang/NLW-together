@@ -67,3 +67,123 @@ app.listen(3000, () => console.log("Sever is runnig..."));
 - PUT => Altera uma informacao
 - DELETE => Remove um dado
 - PATCH => Altera uma informacao especifica
+
+### Tipos de parâmetros.
+
+1. Routes Params: http://localhost:3000/exemplos/13049871240981674087234630847
+
+- Routes Params sao parâmetros que fazem parte da rota
+
+2. Query Params:
+
+- São parâmetros que fazem parte de uma query,
+  utilizamos quando queremos fazer um filtro, quando queremos buscar algo. A diferença entre query e routes params, query são parâmetros não obrigatórios e eles não são explícitos.
+
+3. Body Params:
+
+- São os parâmetros utilizados nos métodos post, put ou patch, são parâmetros que vão no corpo da requisição.
+
+### Bancos de dados.
+
+1. SQLite
+
+- SQLite sera o banco de dados utilizado na aplicação.
+- Comando '**yarn add sqlite3 --save**'
+- crie uma pasta dentro de **src** de nome **database** e dentro de **database** crie o arquivo **index.ts**, dentro de **index.ts** ponha.
+
+```ts
+
+```
+
+2. ORM => TypeORM
+
+- ORM (**Object Relational Mapper**) é uma técnica de mapeamento objeto relacional que permite fazer uma relação dos objetos com os dados que os mesmos representam, ele fazes a integração da aplicação com o banco de dados sem a necessidade de criar códigos em SQL.
+- Comando '**yarn add typeorm --save**'
+- Crie um novo arquivo na pasta **src** com o nome **ormconfig.json** e adicione isso.
+
+```json
+{
+  "type": "sqlite",
+  "database": "src/database/database.sqlite",
+  "migrations": ["src/database/migrations/*.ts"],
+  "cli": {
+    "migrationsDir": "src/database/migrations"
+  }
+}
+```
+
+3. Reflect-metadata
+
+- reflect-metadata permite os decoreitos no código.
+
+```ts
+import "reflect-metadata";
+```
+
+- Apos as configurações acima, se você não estiver com o **ts-node-dev** rodando, de um **yarn dev** e o banco de dados sera criado na pasta **database**.
+
+### Configurando as Migrations.
+
+- Migrations seria o controle de versionamento de tabelas dentro do banco de dados, permite que você mantenha um registro das mudanças feitas no banco de dados em termos de migrações de dados que são versionadas em conjunto com o código fonte da aplicação.
+
+1. Comando '**yarn typeorm migration:create -n CreateUsers**'
+
+- Esse comando cria uma migration de nome **CreateUsers**, dentro desse arquivo criaremos a tabela do banco de dados.
+
+- A migration ficara assim:
+
+```ts
+import { MigrationInterface, QueryRunner, Table } from "typeorm";
+
+export class CreateUsers1624482127636 implements MigrationInterface {
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.createTable(
+      new Table({
+        name: "users",
+        columns: [
+          {
+            name: "id",
+            type: "uuid",
+            isPrimary: true,
+          },
+          {
+            name: "name",
+            type: "varchar",
+          },
+          {
+            name: "email",
+            type: "varchar",
+          },
+          {
+            name: "admin",
+            type: "boolean",
+            default: false,
+          },
+          {
+            name: "created_at",
+            type: "timestamp",
+            default: "now()",
+          },
+          {
+            name: "updated_at",
+            type: "timestamp",
+            default: "now()",
+          },
+        ],
+      })
+    );
+  }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable("users");
+  }
+}
+```
+
+2. Comando '**yarn typeorm migration:run**'
+
+- Esse comando faz rodar as migrations e cria a tabela dentro do banco de dados.
+
+3. Comando '**yarn typeorm migration:revert**'
+
+- Esse comando remove as migrations.
