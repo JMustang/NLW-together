@@ -12,6 +12,23 @@
 
 1. Comando '**yarn add typescript -D**'
 
+### Configurando o tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "strict": false,
+    "strictPropertyInitialization": false,
+    "esModuleInterop": true ,
+    "experimentalDecorators": true,
+     "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
+```
+
 - Essa dependências adiciona o typescript ao projeto.
 - O **-D**, defini as dependências como dependências de desenvolvimento.
 - Comando '**yarn tsc --init**'
@@ -92,7 +109,8 @@ app.listen(3000, () => console.log("Sever is runnig..."));
 - crie uma pasta dentro de **src** de nome **database** e dentro de **database** crie o arquivo **index.ts**, dentro de **index.ts** ponha.
 
 ```ts
-
+import { createConnection } from "typeorm";
+createConnection();
 ```
 
 2. ORM => TypeORM
@@ -107,7 +125,8 @@ app.listen(3000, () => console.log("Sever is runnig..."));
   "database": "src/database/database.sqlite",
   "migrations": ["src/database/migrations/*.ts"],
   "cli": {
-    "migrationsDir": "src/database/migrations"
+    "migrationsDir": "src/database/migrations",
+    "entitiesDir": "src/entity"
   }
 }
 ```
@@ -187,3 +206,56 @@ export class CreateUsers1624482127636 implements MigrationInterface {
 3. Comando '**yarn typeorm migration:revert**'
 
 - Esse comando remove as migrations.
+
+### Criando entidades
+
+- Entidades, são instâncias de tipos de entidades como Clientes, Produtos os quais estão estruturados em registros e chaves.
+- Uma entidade seria como uma tabela, entao, quando criamos a entidade **User** criamos a tabela **User**.
+
+1. Comando '**yarn typeorm entity:create -n User**'
+
+- Esse comando ira criar a entidade **User**.
+
+- Como ficara a entidade.
+
+```ts
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import { v4 } from "uuid";
+
+@Entity("users")
+class User {
+  @PrimaryColumn()
+  readonly id: string;
+  @Column()
+  name: string;
+  @Column()
+  email: string;
+  @Column()
+  admin: boolean;
+  @CreateDateColumn()
+  created_at: Date;
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  constructor() {
+    if (!this.id) {
+      this.id = uuid();
+    }
+  }
+}
+export { User };
+```
+
+2. Comando '**yarn add uuid**'
+
+- Esse comando adiciona a dependência da **uuid** na aplicação.
+
+3. Comando '**yarn add @types/uuid -D**'
+
+- Adicona as tipagens da dependência **uuid**.
