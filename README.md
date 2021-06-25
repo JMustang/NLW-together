@@ -259,3 +259,20 @@ export { User };
 3. Comando '**yarn add @types/uuid -D**'
 
 - Adicona as tipagens da dependência **uuid**.
+
+### Repositórios
+
+- Repositório seria toda camada que faz a comunicação entre a entidade e o banco de dados.
+- Ele que seria responsável pelos métodos de comunicação entre a entidade e o banco de dados.
+
+- Como fica o código **UsersRepositories.ts**.
+
+```ts
+import { EntityRepository, Repository } from "typeorm";
+import { User } from "../entities/User";
+
+@EntityRepository(User)
+class UsersRepositories extends Repository<User> {}
+
+export { UsersRepositories };
+```
