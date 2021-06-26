@@ -276,3 +276,48 @@ class UsersRepositories extends Repository<User> {}
 
 export { UsersRepositories };
 ```
+
+### Services
+
+- Services, u se case, regra de negócios, são as regras da api,
+  a camada que seria responsável por fazer validação, verificação, fazer o que for preciso antes de enviar para o banco de dados.
+
+- Exemplo de como ficar o codigo dessa api.
+
+```ts
+import { UsersRepositories } from "../repositories/UsersRepositories";
+
+interface IUserRequest {
+  name: string;
+  email: string;
+  admin?: boolean;
+}
+
+class CreateUserService {
+  async execute({ name, email, admin }: IUserRequest) {
+    const usersRepository = new UsersRepositories();
+
+    if (!email) {
+      throw new Error("Email incorrect!!");
+    }
+
+    const userAlreadyExists = await usersRepository.findOne({
+      email,
+    });
+    if (userAlreadyExists) {
+      throw new Error("User already exists!");
+    }
+
+    const user = usersRepository.create({
+      name,
+      email,
+      admin,
+    });
+
+    await usersRepository.save(user);
+    return user;
+  }
+}
+
+export { CreateUserService };
+```
