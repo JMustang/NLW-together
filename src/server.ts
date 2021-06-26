@@ -1,18 +1,14 @@
 import "reflect-metadata";
 import express from "express";
 
+import { router } from "./routes";
+
 import "./database";
 
 const app = express();
 
-app.get("/test", (req, res) => {
-  // req = request   => Entradas.
-  // res = response  => Saidas.
-  return res.send("Testando rotas.");
-});
+app.use(express.json());
 
-app.post("/test-post", (req, res) => {
-  return res.send("Ola teste post");
-});
+app.use(router);
 
 app.listen(3000, () => console.log(`Sever is runnig at localhost:3000/`));

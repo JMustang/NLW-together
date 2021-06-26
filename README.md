@@ -321,3 +321,46 @@ class CreateUserService {
 
 export { CreateUserService };
 ```
+
+### Controllers
+
+- O Controller seria como o Request, response, dentro do Controller temos acesso ao Request e Response da aplicação.
+- Basicamente ele pega a informação do serve e repassa par a o service.
+
+- Exemplo.
+
+```ts
+import { Request, Response } from "express";
+import { CreateUserService } from "../services/CreateUserService";
+
+class CreateUserController {
+  async handle(request: Request, response: Response) {
+    const { name, email, admin } = request.body;
+
+    const createUserService = new CreateUserService();
+
+    const user = await createUserService.execute({ name, email, admin });
+
+    return response.json(user);
+  }
+}
+
+export { CreateUserController };
+```
+
+### Routes
+
+- Exemplo
+
+```ts
+import { Router } from "express";
+import { CreateUserController } from "./controllers/CreateUserController";
+
+const router = Router();
+
+const createUserController = new CreateUserController();
+
+router.post("/users", createUserController.handle);
+
+export { router };
+```
