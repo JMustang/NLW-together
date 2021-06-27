@@ -364,3 +364,16 @@ router.post("/users", createUserController.handle);
 
 export { router };
 ```
+
+### Middlewares
+
+- Middlewares são interceptadores que existe dentro de uma requisição, que pode ser interrompida uma requisição por completo ou adicionar uma informação dentro do Middlewares, quando chamamos uma requisição, pode ter um Middlewares dentro do fluxo da requisição sendo executado.
+
+1. Comando '**yarn add express-async-errors**'
+
+- Esse comando adiciona a lib de tratativas de errors.
+- Imports
+
+```ts
+import "express-async-errors";
+```
