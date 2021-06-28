@@ -377,3 +377,11 @@ export { router };
 ```ts
 import "express-async-errors";
 ```
+
+### Criando tags
+
+.1 Comando '**yarn typeorm migration:create -n CreateTags**' .
+
+- Esse comando cria uma migration com o nome de **CreateTags**.
+- Ao terminar de criar a nova tabela roda as migration.
+- '**yarn typeorm migration:run**'
