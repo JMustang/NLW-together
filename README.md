@@ -1,6 +1,7 @@
-# CRUDizão da massa - NWL Together
+# Crudizão da massa - NWL Together
 
 ## Documentação da trilha NODEJS.
+###Prof: daniele leao evangelista.
 
 ### Passo a passo do projeto.
 
